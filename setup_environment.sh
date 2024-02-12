@@ -69,7 +69,7 @@ current_path=$(pwd)
 echo "Current path is: $current_path"
 
 
-cp license_accepter.sh /opt/license_accepter.sh
+cp /app/license_accepter.sh /opt/license_accepter.sh
 
 chmod +x /opt/license_accepter.sh
 

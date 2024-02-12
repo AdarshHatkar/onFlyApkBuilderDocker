@@ -87,7 +87,19 @@ export BUILDER_ENVIRONMENT="production"
 
 node --version
 
-rm /opt/package-lock.json
+
+
+FILE_PATH="/opt/package-lock.json "
+
+# Check if the file exists
+if [ -f "$FILE_PATH" ]; then
+    echo "File exists. Deleting..."
+    # Delete the file
+    rm "$FILE_PATH"
+    echo "File deleted."
+else
+    echo "File does not exist."
+fi
 # npm install -g typescript 
 
 npm i

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+rm -r app
+
+mkdir app
+
+cd app
+
+git clone https://github.com/AdarshHatkar/onFlyApkBuilderDocker.git .
+
+bash setup_environment.sh

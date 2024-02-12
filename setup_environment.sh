@@ -80,7 +80,7 @@ node --version
 
 npm install -g typescript
 
-npm ci
+npm i
 
 
 exec npm run  run_app

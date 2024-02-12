@@ -86,6 +86,17 @@ chmod +x /app/gaming_app_apk_v106/buildApk.sh
 
 cd /app
 
+OUTPUT_DIR="/app/outputApks"
+
+# Check if the directory exists
+if [ ! -d "$OUTPUT_DIR" ]; then
+    echo "Directory $OUTPUT_DIR does not exist. Creating..."
+    mkdir -p "$OUTPUT_DIR"
+    echo "Directory $OUTPUT_DIR created."
+else
+    echo "Directory $OUTPUT_DIR already exists."
+fi
+
 export BUILDER_ENVIRONMENT="production"
 
 
@@ -93,18 +104,7 @@ node --version
 
 
 
-# FILE_PATH="/opt/package-lock.json "
 
-# # Check if the file exists
-# if [ -f "$FILE_PATH" ]; then
-#     echo "File exists. Deleting..."
-#     # Delete the file
-#     rm "$FILE_PATH"
-#     echo "File deleted."
-# else
-#     echo "File does not exist."
-# fi
-# npm install -g typescript 
 
 npm i
 

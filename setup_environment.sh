@@ -60,7 +60,11 @@ export PATH=${PATH}:${GRADLE_HOME}/bin:${KOTLIN_HOME}/bin:${ANDROID_HOME}/cmdlin
 export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
 export QTWEBENGINE_DISABLE_SANDBOX=1
 
-# Accept the license agreements of the SDK components
+# Accept the license agreements of the SDK components 
+cp license_accepter.sh /opt/
+
+chmod +x /opt/license_accepter.sh
+
 /opt/license_accepter.sh $ANDROID_HOME
 
 # Set working directory
@@ -68,6 +72,15 @@ export QTWEBENGINE_DISABLE_SANDBOX=1
 
 # Copy files
 # chmod +x main.sh
-# chmod +x /app/gaming_app_apk_v106/buildAbb.sh
-# chmod +x /app/gaming_app_apk_v106/buildApk.sh
+chmod +x /app/gaming_app_apk_v106/buildAbb.sh
+chmod +x /app/gaming_app_apk_v106/buildApk.sh
 export BUILDER_ENVIRONMENT=production
+
+node --version
+
+npm install -g typescript
+
+npm ci
+
+
+exec npm run  run_app

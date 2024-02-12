@@ -87,9 +87,9 @@ export BUILDER_ENVIRONMENT="production"
 
 node --version
 
+rm /opt/package-lock.json
 # npm install -g typescript 
 
 npm i
 
-
-exec npm run  run_app
+npm run  run_app

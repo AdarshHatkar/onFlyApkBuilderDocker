@@ -17,6 +17,12 @@ else
     echo "Git is already installed."
 fi
 
+# Support multiarch and install essential tools
+JDK_VERSION=17
+GRADLE_VERSION=8.3
+KOTLIN_VERSION=1.9.10
+ANDROID_SDK_VERSION=10406996
+
 # Check if Gradle is installed
 if [ ! -d "/opt/gradle" ]; then
     # Download and install Gradle
@@ -58,6 +64,7 @@ if [ ! -f "/opt/license_accepter.sh" ]; then
     # Copy license accepter script
     cp /app/license_accepter.sh /opt/license_accepter.sh
     chmod +x /opt/license_accepter.sh
+    /opt/license_accepter.sh $ANDROID_HOME
 else
     echo "License accepter script is already copied."
 fi

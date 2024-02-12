@@ -1,21 +1,33 @@
 #!/bin/bash
 
+
+current_path=$(pwd)
+echo "Current path is: $current_path"
+
+
+# Set noninteractive mode for Debian frontend
+export DEBIAN_FRONTEND="noninteractive"
+
+# Update package repository
+apt-get update
+
+# Install curl
+apt-get install -y curl
+
+
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then
     # Install Node.js
+
     curl -sL https://deb.nodesource.com/setup_20.x | bash -
+    apt-get upgrade -y
     apt-get install -y nodejs
 else
     echo "Node.js is already installed."
 fi
 
-# Check if Git is installed
-if ! command -v git &> /dev/null; then
-    # Install Git
-    apt-get install -y --no-install-recommends git
-else
-    echo "Git is already installed."
-fi
+# Install Git
+apt-get install -y --no-install-recommends git wget unzip 
 
 # Support multiarch and install essential tools
 JDK_VERSION=17
@@ -91,12 +103,7 @@ export BUILDER_ENVIRONMENT="production"
 # Change working directory
 cd /app
 
-# Run npm installation if not already installed
-if [ ! -f "node_modules" ]; then
-    npm install
-else
-    echo "npm packages are already installed."
-fi
+ npm install
 
 # Run npm script to run the app
 npm run run_app

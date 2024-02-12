@@ -45,7 +45,7 @@
     "public-ip": "^6.0.1",
     "read-chunk": "^4.0.3",
     "rimraf": "^5.0.0",
-    "sharp": "^0.32.0",
+    "sharp": "^0.32.6",
     "superjson": "^1.12.2",
     "swagger-ui-express": "^4.6.2",
     "systeminformation": "^5.17.12",

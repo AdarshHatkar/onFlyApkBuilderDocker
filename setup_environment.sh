@@ -57,11 +57,11 @@ if [ ! -d "/opt/kotlinc" ]; then
 else
     echo "Kotlin compiler is already installed."
 fi
-
+export ANDROID_HOME="/opt/android-sdk"
 # Check if Android SDK is installed
 if [ ! -d "/opt/android-sdk" ]; then
     # Download and install Android SDK
-    export ANDROID_HOME="/opt/android-sdk"
+  
     mkdir -p ${ANDROID_HOME}/cmdline-tools && \
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip && \
         unzip *tools*linux*.zip -d ${ANDROID_HOME}/cmdline-tools && \

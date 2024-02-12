@@ -1,7 +1,10 @@
 import { exec, spawn } from 'child_process';
-import { rename, copyFile } from 'fs';
+
+import { rename, copyFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
+
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 import {
@@ -21,15 +24,16 @@ export let buildAbb = (orderId, apkFileName, newVersionCode) => {
         };
     }>(async (resolve, reject) => {
         try {
-
-            console.log( __dirname);
+            console.log(__dirname);
             console.log('newAppSourceCodeDir', newAppSourceCodeDir);
-     
+
             const command = 'gradle wrapper';
             const args = ['--daemon', ':app:bundleRelease'];
             const options = { cwd: newAppSourceCodeDir };
 
-            const gradleProcess = spawn('bash', [`${newAppSourceCodeDir}/buildAbb.sh`]);
+            const gradleProcess = spawn('bash', [
+                `${newAppSourceCodeDir}/buildAbb.sh`,
+            ]);
 
             gradleProcess.stdout.on('data', (data) => {
                 console.log(`stdout: ${data}`);
@@ -51,7 +55,7 @@ export let buildAbb = (orderId, apkFileName, newVersionCode) => {
                 });
             });
 
-            gradleProcess.on('close', (code) => {
+            gradleProcess.on('close', async (code) => {
                 console.log(`Command exited with code ${code}`);
 
                 if (code === 0) {
@@ -60,46 +64,37 @@ export let buildAbb = (orderId, apkFileName, newVersionCode) => {
                     const abbNewName = `${apkFileName}.aab`;
                     const renamedAbb = join(releaseAbbDir, abbNewName);
                     const outputAbb = join(outputApksDir, abbNewName);
+                    try {
+                        await rename(releaseAbb, renamedAbb);
+                    } catch (error) {
+                        console.error(`Error renaming file: ${error.message}`);
+                        reject(error);
+                    }
 
-                    rename(releaseAbb, renamedAbb, (err) => {
-                        if (err) {
-                            console.error(
-                                `Error renaming file: ${err.message}`
-                            );
-                            reject(err);
-                        } else {
-                            console.log('Rename complete!');
+                    console.log('Rename complete!');
 
-                            copyFile(renamedAbb, outputAbb, async (err) => {
-                                if (err) {
-                                    console.error(
-                                        `Error copying file: ${err.message}`
-                                    );
-                                    reject(err);
-                                } else {
-                                    console.log(
-                                        'renamedApk was copied to output folder'
-                                    );
+                    try {
+                        await copyFile(renamedAbb, outputAbb);
+                    } catch (error) {
+                        console.error(`Error copying file: ${error.message}`);
+                        reject(error);
+                    }
 
-                                    console.log('APK generated');
+                    console.log('renamedApk was copied to output folder');
 
-                                    // upload apk to ftp
-                                    try {
-                                        resolve({
-                                            status: 'success',
-                                            msg: `APK generated`,
-                                            data: { outputAbb, abbNewName },
-                                        });
-                                    } catch (error) {
-                                        console.error(
-                                            `Error uploading APK: ${error.message}`
-                                        );
-                                        reject(error);
-                                    }
-                                }
-                            });
-                        }
-                    });
+                    console.log('APK generated');
+
+                    // upload apk to ftp
+                    try {
+                        resolve({
+                            status: 'success',
+                            msg: `APK generated`,
+                            data: { outputAbb, abbNewName },
+                        });
+                    } catch (error) {
+                        console.error(`Error uploading APK: ${error.message}`);
+                        reject(error);
+                    }
                 } else {
                     console.error('Command exited with non-zero status');
                     reject(

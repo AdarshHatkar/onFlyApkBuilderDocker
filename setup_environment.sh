@@ -77,12 +77,14 @@ chmod +x /opt/license_accepter.sh
 
 # Set working directory
 
-cd /app
+
 
 # Copy files
 # chmod +x main.sh
 chmod +x /app/gaming_app_apk_v106/buildAbb.sh
 chmod +x /app/gaming_app_apk_v106/buildApk.sh
+
+cd /app
 
 export BUILDER_ENVIRONMENT="production"
 

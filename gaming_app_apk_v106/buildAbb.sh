@@ -9,4 +9,4 @@ cd appSourceCode
 current_path=$(pwd)
 echo "Current path is: $current_path"
 
-exec gradle wrapper --daemon :app:bundleRelease
+sh gradlew --daemon :app:bundleRelease

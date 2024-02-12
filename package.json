@@ -10,7 +10,7 @@
     "dev-nodemon": " nodemon -q src/app.js ",
     "production_bat": "batch\\production.bat",
     "build": "tsc && node .",
-    "run_app": " tsc && node dist/app.js",
+    "run_app": "npx tsc && node dist/app.js",
     "prod-run": "set BUILDER_ENVIRONMENT=production && tsc && node dist/app.js",
 
     "watch": "tsc --watch ",

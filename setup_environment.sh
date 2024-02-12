@@ -1,7 +1,11 @@
 #!/bin/bash
 
+current_path=$(pwd)
+echo "Current path is: $current_path"
+
+
 # Set noninteractive mode for Debian frontend
-export DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND="noninteractive"
 
 # Update package repository
 apt-get update
@@ -24,7 +28,7 @@ KOTLIN_VERSION=1.9.10
 ANDROID_SDK_VERSION=10406996
 
 dpkg --add-architecture i386 
-apt-get update 
+
 apt-get dist-upgrade -y 
 apt-get install -y --no-install-recommends libncurses5:i386 libc6:i386 libstdc++6:i386 lib32gcc-s1 lib32ncurses6 lib32z1 zlib1g:i386 
 apt-get install -y --no-install-recommends openjdk-${JDK_VERSION}-jdk 
@@ -45,7 +49,7 @@ cd /opt && \
     rm *kotlin*.zip
 
 # Download and install Android SDK
-ANDROID_HOME=/opt/android-sdk
+export ANDROID_HOME="/opt/android-sdk"
 mkdir -p ${ANDROID_HOME}/cmdline-tools && \
     wget -q https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip && \
     unzip *tools*linux*.zip -d ${ANDROID_HOME}/cmdline-tools && \
@@ -53,15 +57,19 @@ mkdir -p ${ANDROID_HOME}/cmdline-tools && \
     rm *tools*linux*.zip
 
 # Set environment variables
-JAVA_HOME=/usr/lib/jvm/java-${JDK_VERSION}-openjdk-amd64
-GRADLE_HOME=/opt/gradle
-KOTLIN_HOME=/opt/kotlinc
-export PATH=${PATH}:${GRADLE_HOME}/bin:${KOTLIN_HOME}/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/cmdline-tools/tools/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
-export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
+export JAVA_HOME="/usr/lib/jvm/java-${JDK_VERSION}-openjdk-amd64"
+export GRADLE_HOME="/opt/gradle"
+export KOTLIN_HOME="/opt/kotlinc"
+export PATH=${PATH}:"${GRADLE_HOME}/bin:${KOTLIN_HOME}/bin":"${ANDROID_HOME}/cmdline-tools/latest/bin":"${ANDROID_HOME}/cmdline-tools/tools/bin":"${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator"
+export LD_LIBRARY_PATH="${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib"
 export QTWEBENGINE_DISABLE_SANDBOX=1
 
 # Accept the license agreements of the SDK components 
-cp license_accepter.sh /opt/
+current_path=$(pwd)
+echo "Current path is: $current_path"
+
+
+cp license_accepter.sh /opt/license_accepter.sh
 
 chmod +x /opt/license_accepter.sh
 
@@ -74,11 +82,12 @@ chmod +x /opt/license_accepter.sh
 # chmod +x main.sh
 chmod +x /app/gaming_app_apk_v106/buildAbb.sh
 chmod +x /app/gaming_app_apk_v106/buildApk.sh
-export BUILDER_ENVIRONMENT=production
+
+export BUILDER_ENVIRONMENT="production"
 
 node --version
 
-npm install -g typescript
+# npm install -g typescript 
 
 npm i
 
